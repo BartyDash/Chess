@@ -65,8 +65,13 @@ void printAtPosition(int x, int y, char **textToDraw, int sizeArray, bool isMenu
                     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                     printf("%s", textToDraw[i]);
                 }
+            }else{
+                printf("\033[0;37m");
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                printf("%s", textToDraw[i]);
             }
         }else{
+            printf("\033[0;37m");
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             printf("%s", textToDraw[i]);
         }
