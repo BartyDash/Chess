@@ -4,17 +4,11 @@
 #include <conio.h>
 #include <windows.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 #define white 0xDB
 #define black 0xFF
-
-char *chessHeader[] = {
-        "  ..|'''.| '||'  '||' '||''''|   .|'''.|   .|'''.| \n",
-        ".|'     '   ||    ||   ||  .     ||..  '   ||..  ' \n",
-        "||          ||''''||   ||''|      ''|||.    ''|||. \n",
-        "'|.      .  ||    ||   ||       .     '|| .     '||\n",
-        " ''|....'  .||.  .||. .||.....| |'....|'  |'....|' \n"
-};
 
 void printLine(int iSize, int color1, int color2){
 
@@ -45,29 +39,55 @@ void printBoard(int iSize){
         }
     }
 }
-void printAtPosition(int x, int y, char **textToDraw, int sizeArray){//<--- tutaj chcę przekazać tablicę
+
+void arrowHere(int realPosition, int arrowPosition){
+    if (realPosition == arrowPosition){
+        printf(" <--");
+    } else{
+        printf("    ");
+    }
+}
+
+void printAtPosition(int x, int y, char **textToDraw, int sizeArray, bool isMenu, int realPosition, int arrowPosition){//<--- tutaj chcę przekazać tablicę
     COORD coord = {(short)x, (short)y};
 
     for (int i = 0; i < sizeArray; ++i) {
+        coord.X = (short)x;
         coord.Y = (short)(y - sizeArray / 2 + i);
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-        printf("%s", textToDraw[i]);
+        if (isMenu) {
+            if (realPosition == arrowPosition) {
+                printf("\033[0;31m");
+                if (i == sizeArray / 2) {
+                    coord.X -= 4;
+                    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                    printf("--> %s <--", textToDraw[i]);
+                }else{
+                    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+                    printf("%s", textToDraw[i]);
+                }
+            }
+        }else{
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+            printf("%s", textToDraw[i]);
+        }
     }
 }
 
 void menu(){
+    int position = 1;
+    int keyPressed = 0;
+
+#define MAX 3
+#define MIN 1
+
     //https://www.kammerl.de/ascii/AsciiSignature.php <--- tej stronki użyłem do wygenerowania napisu
-    char *header = "\n"
-                  "\n"
-                  "  ..|'''.| '||'  '||' '||''''|   .|'''.|   .|'''.| \n"
-                  ".|'     '   ||    ||   ||  .     ||..  '   ||..  ' \n"
-                  "||          ||''''||   ||''|      ''|||.    ''|||. \n"
-                  "'|.      .  ||    ||   ||       .     '|| .     '||\n"
-                  " ''|....'  .||.  .||. .||.....| |'....|'  |'....|' \n"
-                  "                                                   \n"
-                  "                                                   \n"
-                  "\n"
-                  "";
+    char *chessHeader[] = {
+            "  ..|'''.| '||'  '||' '||''''|   .|'''.|   .|'''.| \n",
+            ".|'     '   ||    ||   ||  .     ||..  '   ||..  ' \n",
+            "||          ||''''||   ||''|      ''|||.    ''|||. \n",
+            "'|.      .  ||    ||   ||       .     '|| .     '||\n",
+            " ''|....'  .||.  .||. .||.....| |'....|'  |'....|' \n"
+    };
     //-----------------------------------------------------------------------------------------------
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     int ret;
@@ -82,23 +102,37 @@ void menu(){
         }
     }*/
 
-    printAtPosition((csbi.dwSize.X - 51)/2, csbi.dwSize.Y/3, chessHeader, 5);
-    printAtPosition((csbi.dwSize.X - 25)/2, csbi.dwSize.Y/2 + 2, (char *[]){
-        " _____ __    _____ __ __ ",
-        "|  _  |  |  |  _  |  |  |",
-        "|   __|  |__|     |_   _|",
-        "|__|  |_____|__|__| |_|  "}, 4);
-    printAtPosition((csbi.dwSize.X - 39)/2, csbi.dwSize.Y/2 + 7, (char *[]){
-        " _____ _____ _____ _ _____ _____ _____ ",
-        "|     |  _  |_   _|_|     |   | |   __|",
-        "|  |  |   __| | | | |  |  | | | |__   |",
-        "|_____|__|    |_| |_|_____|_|___|_____|"}, 4);
-    printAtPosition((csbi.dwSize.X - 21)/2, csbi.dwSize.Y/2 + 12, (char *[]){
-            " _____ _____ _ _____ ",
-            "|     |  |  |_|_   _|",
-            "|  |  |  |  | | | |  ",
-            "|__  _|_____|_| |_|  ",
-            "   |__|              "}, 5);
+    while (keyPressed != 13) {
+        system("cls");
+
+        printAtPosition((csbi.dwSize.X - 51) / 2, csbi.dwSize.Y / 3, chessHeader, 5, false, 0, 0);
+        printAtPosition((csbi.dwSize.X - 25) / 2, csbi.dwSize.Y / 2 + 2, (char *[]) {
+                " _____ __    _____ __ __ ",
+                "|  _  |  |  |  _  |  |  |",
+                "|   __|  |__|     |_   _|",
+                "|__|  |_____|__|__| |_|  "}, 4, true, 1, position);
+        printAtPosition((csbi.dwSize.X - 39) / 2, csbi.dwSize.Y / 2 + 7, (char *[]) {
+                " _____ _____ _____ _ _____ _____ _____ ",
+                "|     |  _  |_   _|_|     |   | |   __|",
+                "|  |  |   __| | | | |  |  | | | |__   |",
+                "|_____|__|    |_| |_|_____|_|___|_____|"}, 4, true, 2, position);
+        printAtPosition((csbi.dwSize.X - 21) / 2, csbi.dwSize.Y / 2 + 12, (char *[]) {
+                " _____ _____ _ _____ ",
+                "|     |  |  |_|_   _|",
+                "|  |  |  |  | | | |  ",
+                "|__  _|_____|_| |_|  ",
+                "   |__|              "}, 5, true, 3, position);
+
+        keyPressed = getch();
+
+        if (keyPressed == 80 && position != MAX) {
+            position++;
+        } else if (keyPressed == 72 && position != MIN) {
+            position--;
+        } else {
+            position = position;
+        }
+    }
 }
 
 
