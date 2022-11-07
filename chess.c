@@ -77,6 +77,24 @@ void printAtPosition(int x, int y, char **textToDraw, int sizeArray, bool isMenu
     }
 }
 
+void menuPlay(){
+    printf("1 option - PLAY");
+}
+
+void menuOptions(){
+    printf("2 option - OPTIONS");
+}
+
+void menuQuit(){
+    int keyPressed = 0;
+    while (keyPressed != 13){
+        system("cls");
+        printf("3 option - QUIT");
+
+        keyPressed = getch();
+    }
+}
+
 void menu(){
     int position = 1;
     int keyPressed = 0;
@@ -142,13 +160,13 @@ void menu(){
 
     switch (position) {
         case 1:
-            printf("1 option - PLAY");
+            menuPlay();
             break;
         case 2:
-            printf("2 option - OPTIONS");
+            menuOptions();
             break;
         case 3:
-            printf("3 option - QUIT");
+            menuQuit();
             break;
         default:
             break;
@@ -200,7 +218,7 @@ int main(void){
     menu();
     //printBoard(iSize);
 
-    printf("%c", getch());//getch() <--- wczytuje klawisz bez akceptacji enterem
+    //printf("%c", getch());//getch() <--- wczytuje klawisz bez akceptacji enterem
 
     return 0;
 }
