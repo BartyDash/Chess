@@ -65,13 +65,12 @@ void printAtPosition(int x, int y, char **textToDraw, int sizeArray, bool isMenu
                     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                     printf("%s", textToDraw[i]);
                 }
-            }else{
                 printf("\033[0;37m");
+            }else{
                 SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
                 printf("%s", textToDraw[i]);
             }
         }else{
-            printf("\033[0;37m");
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
             printf("%s", textToDraw[i]);
         }
@@ -137,6 +136,22 @@ void menu(){
         } else {
             position = position;
         }
+    }
+
+    system("cls");
+
+    switch (position) {
+        case 1:
+            printf("1 option - PLAY");
+            break;
+        case 2:
+            printf("2 option - OPTIONS");
+            break;
+        case 3:
+            printf("3 option - QUIT");
+            break;
+        default:
+            break;
     }
 }
 
