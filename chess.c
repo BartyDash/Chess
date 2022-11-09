@@ -10,6 +10,8 @@
 #define white 0xDB
 #define black 0xFF
 
+bool quitApp = false;
+
 void printLine(int iSize, int color1, int color2){
 
     int cell = 6;
@@ -82,17 +84,36 @@ void menuPlay(){
 }
 
 void menuOptions(){
-    printf("2 option - OPTIONS");
+    int keyPressed = 0;
+    while (keyPressed != 13){
+    	system("cls");
+    	printf("2 option - OPTIONS");
+        keyPressed = getch();
+    }
 }
 
 void menuQuit(){
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	int ret;
+    ret = GetConsoleScreenBufferInfo(GetStdHandle( STD_OUTPUT_HANDLE ),&csbi);
+    
+    int position = 1;
     int keyPressed = 0;
+
+#define menuQuitMAX 2
+#define menuQuitMIN 1
+
     while (keyPressed != 13){
         system("cls");
-        printf("3 option - QUIT");
+        printAtPosition((csbi.dwSize.X - 25) / 2, csbi.dwSize.Y / 2, (char *[]) {
+                " _______________________ ",
+                "|                       |",
+                "|     Are you sure?     |",
+                "|_______________________|"}, 4, false, 0, 0);
 
         keyPressed = getch();
     }
+    quitApp = true;
 }
 
 void menu(){
@@ -214,9 +235,10 @@ int main(void){
     int iSize = 8;
 
     //-----------------------------------------------------------------------------------------------
-
-    menu();
-    //printBoard(iSize);
+    while(quitApp != true){
+    	menu();
+    	//printBoard(iSize);
+	}
 
     //printf("%c", getch());//getch() <--- wczytuje klawisz bez akceptacji enterem
 
