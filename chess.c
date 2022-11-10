@@ -11,6 +11,7 @@
 #define black 0xFF
 
 bool quitApp = false;
+int iBoardSize = 8;
 
 void printLine(int iSize, int color1, int color2){
 
@@ -80,7 +81,13 @@ void printAtPosition(int x, int y, char **textToDraw, int sizeArray, bool isMenu
 }
 
 void menuPlay(){
-    printf("1 option - PLAY");
+    int keyPressed = 0;
+    while (keyPressed != 13){
+        system("cls");
+        printf("1 option - PLAY\n");
+        printBoard(iBoardSize);
+        keyPressed = getch();
+    }
 }
 
 void menuOptions(){
@@ -93,27 +100,57 @@ void menuOptions(){
 }
 
 void menuQuit(){
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	int ret;
-    ret = GetConsoleScreenBufferInfo(GetStdHandle( STD_OUTPUT_HANDLE ),&csbi);
-    
     int position = 1;
     int keyPressed = 0;
 
 #define menuQuitMAX 2
 #define menuQuitMIN 1
 
-    while (keyPressed != 13){
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int ret;
+    ret = GetConsoleScreenBufferInfo(GetStdHandle( STD_OUTPUT_HANDLE ),&csbi);
+
+
+    while (keyPressed != 13) {
         system("cls");
-        printAtPosition((csbi.dwSize.X - 25) / 2, csbi.dwSize.Y / 2, (char *[]) {
+
+        printAtPosition((csbi.dwSize.X - 25) / 2, csbi.dwSize.Y / 3, (char *[]) {
                 " _______________________ ",
                 "|                       |",
                 "|     Are you sure?     |",
                 "|_______________________|"}, 4, false, 0, 0);
 
+        printAtPosition((csbi.dwSize.X - 13) / 2, csbi.dwSize.Y / 2, (char *[]) {
+                " ___________ ",
+                "|           |",
+                "|    YES    |",
+                "|___________|"}, 4, true, 1, position);
+        printAtPosition((csbi.dwSize.X - 13) / 2, csbi.dwSize.Y / 2 + 4, (char *[]) {
+                " ___________ ",
+                "|           |",
+                "|    NO!    |",
+                "|___________|"}, 4, true, 2, position);
+
         keyPressed = getch();
+
+        if (keyPressed == 80 && position != menuQuitMAX) {
+            position++;
+        } else if (keyPressed == 72 && position != menuQuitMIN) {
+            position--;
+        } else {
+            position = position;
+        }
     }
-    quitApp = true;
+
+    system("cls");
+
+    switch (position) {
+        case 1:
+            quitApp = true;
+            break;
+        default:
+            break;
+    }
 }
 
 void menu(){
@@ -232,12 +269,9 @@ int main(void){
 
     SetCMDSizeAndTitle(120, 40, "Szachy");
 
-    int iSize = 8;
-
     //-----------------------------------------------------------------------------------------------
     while(quitApp != true){
     	menu();
-    	//printBoard(iSize);
 	}
 
     //printf("%c", getch());//getch() <--- wczytuje klawisz bez akceptacji enterem
