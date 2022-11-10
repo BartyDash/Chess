@@ -142,14 +142,8 @@ void menuQuit(){
         }
     }
 
-    system("cls");
-
-    switch (position) {
-        case 1:
-            quitApp = true;
-            break;
-        default:
-            break;
+    if (position == 1){
+        quitApp = true;
     }
 }
 
