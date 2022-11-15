@@ -10,6 +10,21 @@
 
 int iBoardSize = 8;
 
+int board[8][8] = {
+        2,3,4,6,5,4,3,2,
+        1,1,1,1,1,1,1,1,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,
+        1,1,1,1,1,1,1,1,
+        2,3,4,6,5,4,3,2
+};
+
+struct chessPieces{
+    char pawn, bishop, knight, rook, queen, king;
+};
+
 void printLine(int iSize, int color1, int color2){
 
     int cell = 6;
@@ -59,8 +74,5 @@ int main(void){
     SetCMDSizeAndTitle(120, 40, "Szachy");
 
     printBoard(iBoardSize);
-    printf("U+265F");
-    puts("■");
-    puts("♟");
     getch();
 }
