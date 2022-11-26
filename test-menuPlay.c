@@ -71,8 +71,11 @@ void SetCMDSizeAndTitle(short width, short height, char *title) {
 }
 
 int main(void){
+    system("CHCP 65001");
     SetCMDSizeAndTitle(120, 40, "Szachy");
 
     printBoard(iBoardSize);
+
+    printf("♟♟♞♝♔♜");
     getch();
 }
