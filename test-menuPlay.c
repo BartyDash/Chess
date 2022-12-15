@@ -5,25 +5,22 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+void SetCMDSizeAndTitle(short width, short height, char *title);
+void printLine(int iSize, int color1, int color2);
+void printBoard(int iSize);
+
 #define white 0xDB
 #define black 0xFF
 
 int iBoardSize = 8;
 
-int board[8][8] = {
-        2,3,4,6,5,4,3,2,
-        1,1,1,1,1,1,1,1,
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
-        1,1,1,1,1,1,1,1,
-        2,3,4,6,5,4,3,2
-};
+int main(void){
+    SetCMDSizeAndTitle(120, 40, "Szachy");
 
-struct chessPieces{
-    char pawn, bishop, knight, rook, queen, king;
-};
+    printBoard(iBoardSize);
+
+    getch();
+}
 
 void printLine(int iSize, int color1, int color2){
 
@@ -68,14 +65,4 @@ void SetCMDSizeAndTitle(short width, short height, char *title) {
 
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &rect);
     SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-
-int main(void){
-    system("CHCP 65001");
-    SetCMDSizeAndTitle(120, 40, "Szachy");
-
-    printBoard(iBoardSize);
-
-    printf("♟♟♞♝♔♜");
-    getch();
 }
