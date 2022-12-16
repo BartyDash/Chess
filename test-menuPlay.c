@@ -29,7 +29,7 @@ int focus[8][8];
 int main(void){
     SetCMDSizeAndTitle(120, 40, "Szachy");
 
-    focus[0][0]=1;
+    focus[0][1]=1;
     printBoard(iBoardSize);
 
     getch();
@@ -40,13 +40,12 @@ void printLine(int iSize, int color1, int color2, int row){
     int cell = 6;
 
     for (int subLine = 0; subLine < cell / 2; ++subLine) {
-        for (int i = 0; i < iSize; ++i) {
-            int column = i;
+        for (int column = 0; column < iSize; ++column) {
             for (int j = 0; j < cell; ++j) {
                 if (subLine == cell / 2 / 2 && j == cell / 2 && board[row][column]){
                     printf("%d", board[row][column]);
                 }
-                else if(i%2 == 0){
+                else if(column % 2 == 0){
                     if (board[row][column] && focus[row][column]){
                         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 76);
                         printf("%c", color1);
@@ -55,7 +54,13 @@ void printLine(int iSize, int color1, int color2, int row){
                         printf("%c", color1);
                     }
                 } else{
-                    printf("%c", color2);
+                    if (board[row][column] && focus[row][column]){
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 76);
+                        printf("%c", color2);
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 07);
+                    }else{
+                        printf("%c", color2);
+                    }
                 }
             }
         }
@@ -66,9 +71,8 @@ void printLine(int iSize, int color1, int color2, int row){
 }
 
 void printBoard(int iSize){
-    for (int i = 0; i < iSize; ++i) {
-        int row = i;
-        if(i%2 == 0){
+    for (int row = 0; row < iSize; ++row) {
+        if(row % 2 == 0){
             printLine(iSize, white, black, row);
         } else{
             printLine(iSize, black, white, row);
