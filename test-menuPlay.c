@@ -24,9 +24,12 @@ int board[8][8] = {
         2,3,4,6,5,4,3,2
 };
 
+int focus[8][8];
+
 int main(void){
     SetCMDSizeAndTitle(120, 40, "Szachy");
 
+    focus[0][0]=1;
     printBoard(iBoardSize);
 
     getch();
@@ -44,7 +47,13 @@ void printLine(int iSize, int color1, int color2, int row){
                     printf("%d", board[row][column]);
                 }
                 else if(i%2 == 0){
-                    printf("%c", color1);
+                    if (board[row][column] && focus[row][column]){
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 76);
+                        printf("%c", color1);
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 07);
+                    }else{
+                        printf("%c", color1);
+                    }
                 } else{
                     printf("%c", color2);
                 }
