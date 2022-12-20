@@ -9,6 +9,7 @@ void SetCMDSizeAndTitle(short width, short height, char *title);
 void printLine(int iSize, int color1, int color2, int row);
 void printBoard(int iSize);
 void selectPawn();
+void updateBoard();
 
 #define white 0xDB
 #define black 0xFF
@@ -35,6 +36,7 @@ int board[8][8] = {
 };
 
 int focus[8][8];
+int lastFocus[8][8];
 int focusX = 0;
 int focusY = 0;
 int pawns[32][64];
@@ -48,6 +50,10 @@ int main(void){
     selectPawn();
     //getch();
     return 0;
+}
+void updateBoard(){
+    int cell = 6;
+    int subLine = 3;
 }
 
 void printLine(int iSize, int color1, int color2, int row){
@@ -113,9 +119,10 @@ void SetCMDSizeAndTitle(short width, short height, char *title) {
 void selectPawn(){
     int keyPressed = 0;
     while (keyPressed != KEY_ENTER){
-        system("cls");
+        //system("cls");
         focus[focusY][focusX] = 1;
-        printBoard(iBoardSize);
+        lastFocus[focusY][focusX] = 1;
+        //printBoard(iBoardSize);
 
         keyPressed = getch();
 
