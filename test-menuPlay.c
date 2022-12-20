@@ -40,9 +40,19 @@ int lastFocus[8][8];
 int focusX = 0;
 int focusY = 0;
 int pawns[32][64];
+struct pos{
+    int x;
+    int y;
+}pawnPos[8][8];
 
 int main(void){
     SetCMDSizeAndTitle(120, 40, "Szachy");
+
+
+    pawnPos[0][0].x = 2;
+    pawnPos[0][0].y = 3;
+
+
 
     focus[focusY][focusX] = 1;
     printBoard(iBoardSize);
