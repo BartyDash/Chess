@@ -55,7 +55,7 @@ int main(void){
 
 
     focus[focusY][focusX] = 1;
-    printBoard(iBoardSize);
+    //printBoard(iBoardSize);
 
     selectPawn();
     //getch();
@@ -127,12 +127,13 @@ void SetCMDSizeAndTitle(short width, short height, char *title) {
 }
 
 void selectPawn(){
+    COORD coord = {0, 0};
     int keyPressed = 0;
     while (keyPressed != KEY_ENTER){
-        //system("cls");
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
         focus[focusY][focusX] = 1;
         lastFocus[focusY][focusX] = 1;
-        //printBoard(iBoardSize);
+        printBoard(iBoardSize);
 
         keyPressed = getch();
 
