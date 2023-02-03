@@ -5,6 +5,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define white 0xDB
+#define black 0xFF
+
+enum {
+    KEY_ESC     = 27,
+    KEY_ENTER   = 13,
+    ARROW_UP    = 72,
+    ARROW_DOWN  = 80,
+    ARROW_LEFT  = 75,
+    ARROW_RIGHT = 77
+};
+
 struct player{
     bool isWhite;
 };
@@ -15,6 +27,18 @@ void printCurrentPlayer(struct player currentPlayer, CONSOLE_SCREEN_BUFFER_INFO 
 
 int main(void){
     struct player currentPlayer = {true};
+
+    int iBoardSize = 8;
+    int board[8][8] = {
+            2,3,4,6,5,4,3,2,
+            1,1,1,1,1,1,1,1,
+            0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,
+            1,1,1,1,1,1,1,1,
+            2,3,4,6,5,4,3,2
+    };
 
     //ustawienie wielkosci konsoli i jej nazwy
     SetCMDSizeAndTitle(120, 40, "Szachy");
@@ -30,6 +54,20 @@ int main(void){
 
     getch();
     return 0;
+}
+
+void printLine(int iSize, int color1, int color2, int row){
+
+}
+
+void printBoard(int iSize){
+    for (int row = 0; row < iSize; ++row) {
+        if(row % 2 == 0){
+            printLine(iSize, white, black, row);
+        } else{
+            printLine(iSize, black, white, row);
+        }
+    }
 }
 
 void printCurrentPlayer(struct player currentPlayer, CONSOLE_SCREEN_BUFFER_INFO csbi){
